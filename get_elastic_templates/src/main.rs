@@ -51,8 +51,14 @@ async fn main() {
 
     let controller: TemplateCopyController<EsRepositoryImpl, EsRepositoryImpl> = TemplateCopyController::new(template_copy_service);
 
-    controller.handle_copy().await.unwrap_or_else(|e| {
-        error!("[ERROR][main] {:?}", e);
-        panic!("[ERROR][main] {:?}", e);
-    });
+    match controller.handle_copy().await {
+        Ok(_) => {
+            info!("All template copies have been successful.");
+        },
+        Err(e) => {
+            error!("[ERROR][main] {:?}", e);
+            panic!("[ERROR][main] {:?}", e);
+        }
+    }
+    
 }
